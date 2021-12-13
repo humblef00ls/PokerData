@@ -11,3 +11,5 @@ source ./vm/bin/activate
 pip install -r requirements.txt
 python extractor.py
 ```
+
+NOTE: The output files exceeded github's limit of 100mb and thus are not in this repo.

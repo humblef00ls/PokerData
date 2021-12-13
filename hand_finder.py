@@ -172,7 +172,7 @@ def determine_rank(cards = "TS JH QH KH AH"):
 
 
 
-datax = pd.read_csv('out/extracted.csv')
+datax = pd.read_csv('out/extractedBDF.csv')
 datax['WIN'] = datax['net_earning'] >  0 
 datax['T_CARDS'] =  datax['player_cards']+datax['community_cards']
 datax['T_CARDS'] = datax['T_CARDS'].apply(lambda x: " ".join(re.findall('..',x.upper())))
@@ -217,22 +217,23 @@ aggr = []
 
 
 for index, row in datax.iterrows():
-    rc = row['T_CARDS'].split(' ')
-    vx = list(combinations(rc,5))
+	rc = row['T_CARDS'].split(' ')
+	vx = list(combinations(rc,5))
 
-    lx = [determine_rank(" ".join(i)) for i in vx]
+	lx = [determine_rank(" ".join(i)) for i in vx]
 
-    #lx = list(map(lambda x: (x[0], functools.reduce(lambda t,x : t + valmapx[x], x[1],0) ), lx))
-    lx = sorted(lx, key=lambda x: (cardmapx[x[0]],valmapx[x[1]] if type(x[1]) != list else functools.reduce(lambda t,x : t + valmapx[x], x[1],0))    ,reverse=True)
+	#lx = list(map(lambda x: (x[0], functools.reduce(lambda t,x : t + valmapx[x], x[1],0) ), lx))
+	lx = sorted(lx, key=lambda x: (cardmapx[x[0]],valmapx[x[1]] if type(x[1]) != list else functools.reduce(lambda t,x : t + valmapx[x], x[1],0))    ,reverse=True)
 
-    aggr.append(lx[0])
+	aggr.append(lx[0])
 
+	if index % 5000 == 0 :
+   		print(index)
 
-    # print(determine_rank(row['T_CARDS']))
-
-
+#6 failed extractions total
 datax['best_hand'] = aggr 
 
 print(datax)
 
-datax.to_csv('out/extracted_best_hand.csv')
+datax.to_csv('out/extractedBDF_best_hand.csv')
+
